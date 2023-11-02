@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Media;
 using WMPLib;
+using System.IO;
+using static System.Net.WebRequestMethods;
+using System.Threading;
 
 namespace aydioplayerApp
 {
@@ -50,6 +53,33 @@ namespace aydioplayerApp
         private void button2_Click(object sender, EventArgs e)
         {
             WMP.controls.stop();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if(folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {              
+                IWMPPlaylist playlist;
+
+                    playlist = WMP.playlistCollection.newPlaylist("myplaylist");
+
+                IWMPMedia media;
+                WMP.controls.stop();
+
+                string[] fullfilesPath = Directory.GetFiles(folderBrowserDialog1.SelectedPath, "*.mp3");
+
+                for (int i = 0; i < fullfilesPath.Count(); i++)
+                {
+                    this.Text = i.ToString();
+                    media = WMP.newMedia( Path.GetFullPath(fullfilesPath[i]));
+                    playlist.appendItem(media);
+                }
+
+                WMP.currentPlaylist = playlist;
+                WMP.controls.play();
+                WMP.settings.setMode("loop", true);
+
+            }
         }
     }
 }
