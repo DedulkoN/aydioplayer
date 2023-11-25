@@ -79,7 +79,30 @@ namespace aydioplayerApp
                 WMP.controls.play();
                 WMP.settings.setMode("loop", true);
 
+                timer1.Enabled = true;
+
             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                this.Text = WMP.currentMedia.name;
+            }
+            catch { }
+             
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            WMP.controls.next();
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            WMP.controls.previous();
         }
     }
 }
